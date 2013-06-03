@@ -146,4 +146,22 @@ class MockFunctionTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($t2,$ret);
 	}
 
+
+	/**
+	 */
+	public function testReplaceFunctions()
+	{
+		MockFunction::replace('file_get_contents','dummy string');
+		MockFunction::replace('intval',100);
+
+		$str = file_get_contents('php://input');
+		$int = intval(1.1);
+
+		$this->assertEquals('dummy string',$str);
+		$this->assertEquals(100,$int);
+
+		MockFunction::restore('file_get_contents');
+		MockFunction::restore('intval');
+	}
+
 }
