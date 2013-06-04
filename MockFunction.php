@@ -24,6 +24,16 @@ class MockFunction {
 	}
 
 	/**
+	 * replace to mock.
+	 * @param string $funcname  Function name replaced to mock.
+	 * @param Mixed  $retval    Return value of mock.
+	 * @param bool   $eval      When this is true, evaluate $retval.
+	 *
+	 * Evaluation:
+	 *  $retval is callable, mocking function calls $retval with
+	 *  same arguments of mocked function.
+	 *  $retval is uncallable string, "$args" is parsed as
+	 *  array of mocked function parameters.
 	 */
 	public static function replace($funcname,$retval,$eval=false)
 	{
@@ -40,6 +50,8 @@ class MockFunction {
 	}
 
 	/**
+	 * restore mocked function.
+	 * @param string $funcname  Function name to restore.
 	 */
 	public static function restore($funcname)
 	{
