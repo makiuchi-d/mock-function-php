@@ -12,8 +12,13 @@ class MockFunction {
 	{
 		$counter = self::$counter[$funcname];
 		$retval = self::$retvals[$funcname][$counter];
-		if(is_string($retval) && self::$evals[$funcname][$counter]){
-			$retval = eval("return \"$retval\";");
+		if(self::$evals[$funcname][$counter]){
+			if(is_callable($retval)){
+				$retval = call_user_func($retval,$args);
+			}
+			elseif(is_string($retval)){
+				$retval = eval("return \"$retval\";");
+			}
 		}
 		return $retval;
 	}
