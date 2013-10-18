@@ -18,9 +18,8 @@ function user_function($p)
 	return $p;
 }
 
-function array_first($array)
-{
-	return $array[0];
+function calc($a,$b){
+	return $a + $b;
 }
 
 /**
@@ -214,16 +213,27 @@ class MockFunctionTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testFunName()
 	{
-		MockFunction::replace('file_get_contents','array_first',false);
+		MockFunction::replace('file_get_contents','dirname',false);
 		$ret = file_get_contents('/dev/null');
-		$this->assertEquals('array_first',$ret);
+		$this->assertEquals('dirname',$ret);
 
-		MockFunction::replace('file_get_contents','array_first',true);
+		MockFunction::replace('file_get_contents','dirname',true);
 		$ret = file_get_contents('/dev/null');
-		$this->assertEquals('/dev/null',$ret);
+		$this->assertEquals('/dev',$ret);
 
 		MockFunction::restore('file_get_contents');
 		MockFunction::restore('file_get_contents');
+	}
+
+	public function testMultiArgs()
+	{
+		MockFunction::replace('calc',function($a,$b){
+				return $a * $b;
+			},true);
+		$this->assertEquals(15,calc(3,5));
+
+		MockFunction::restore('calc');
+		$this->assertEquals(8,calc(3,5));
 	}
 
 }
